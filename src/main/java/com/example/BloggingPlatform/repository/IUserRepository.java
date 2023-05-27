@@ -1,13 +1,13 @@
 package com.example.BloggingPlatform.repository;
 
-import com.example.BloggingPlatform.model.User;
+import com.example.BloggingPlatform.model.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface IUserRepository extends JpaRepository<User, Long> {
+public interface IUserRepository extends JpaRepository<Users, Long> {
 
-    User findFirstByEmail(String email);
+    Users findFirstByEmail(String email);
 
-    User findByUserId(Long id);
+    Users findByUserId(Long id);
 }

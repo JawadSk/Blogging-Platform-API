@@ -24,6 +24,6 @@ public class Comment {
 
     @ManyToOne
     @JoinColumn(nullable = false , name = "fk_user_ID")
-    private User user;
+    private Users users;
 
 }

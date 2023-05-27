@@ -1,7 +1,7 @@
 package com.example.BloggingPlatform.service;
 
 import com.example.BloggingPlatform.model.AuthenticationToken;
-import com.example.BloggingPlatform.model.User;
+import com.example.BloggingPlatform.model.Users;
 import com.example.BloggingPlatform.repository.ITokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +27,7 @@ public class TokenService {
             return false;
         }
 
-        String expectedEmail = authToken.getUser().getEmail();
+        String expectedEmail = authToken.getUsers().getEmail();
 
 
         return expectedEmail.equals(email);
@@ -40,8 +40,8 @@ public class TokenService {
         tokenRepo.deleteById(token1.getTokenId());
     }
 
-    public User findUserByToken(String token)
+    public Users findUserByToken(String token)
     {
-        return tokenRepo.findFirstByToken(token).getUser();
+        return tokenRepo.findFirstByToken(token).getUsers();
     }
 }

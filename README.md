@@ -98,16 +98,16 @@
 * commentId
 * commentBody
 * post
-* user
+* users
 ### InstagramFollower
 
 * followerTableId
-* user
+* users
 * follower
 ### InstagramFollowing
 
 * followingTableId
-* user
+* users
 * following
 ### Post
 
@@ -116,12 +116,12 @@
 * postDate
 * postCaption
 * location
-* user
+* users
 ### PostLike
 
 * likeId
 * post
-* user
+* users
 ### User
 
 * userId
@@ -154,4 +154,4 @@
 
 ## Project Summary
 
-* The project is a basic web application built using Java and the Spring framework. It allows users to sign up, sign in, and manage their profile information. Users can also create and view posts. The application uses authentication tokens to secure user data and ensure that only authenticated users can access certain features. The API endpoints include user signup, signin, and update details, post creation and retrieval, and authentication token creation.
+* The project is a basic web application built using Java and the Spring framework. It allows users to sign up, sign in, and manage their profile information. Users can also create and view posts. The application uses authentication tokens to secure users data and ensure that only authenticated users can access certain features. The API endpoints include users signup, signin, and update details, post creation and retrieval, and authentication token creation.

@@ -16,8 +16,8 @@ public class Following {
     private Long followingTableId;
 
     @OneToOne
-    private User user;
+    private Users users;
 
     @OneToOne
-    private User following;
+    private Users following;
 }

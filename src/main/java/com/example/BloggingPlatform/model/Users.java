@@ -3,19 +3,18 @@ package com.example.BloggingPlatform.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Data
-@AllArgsConstructor
+
 @NoArgsConstructor
 @Table
 @Entity
 
-public class User {
+public class Users {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,4 +55,16 @@ public class User {
     private boolean isBlueTicked;
 
 
+
+    public Users(String firstName, String lastName, String blogName, String blogBio, String password, LocalDate dob, String email, String phoneNumber, boolean isBlueTicked) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.blogName = blogName;
+        this.blogBio = blogBio;
+        this.password = password;
+        this.dob = dob;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.isBlueTicked = isBlueTicked;
+    }
 }

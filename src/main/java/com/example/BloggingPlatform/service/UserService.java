@@ -5,7 +5,7 @@ import com.example.BloggingPlatform.dto.SignInOutput;
 import com.example.BloggingPlatform.dto.SignUpOutput;
 import com.example.BloggingPlatform.model.AuthenticationToken;
 import com.example.BloggingPlatform.model.PostLike;
-import com.example.BloggingPlatform.model.User;
+import com.example.BloggingPlatform.model.Users;
 import com.example.BloggingPlatform.repository.ITokenRepository;
 import com.example.BloggingPlatform.repository.IUserRepository;
 import jakarta.transaction.Transactional;
@@ -40,18 +40,19 @@ public class UserService {
     LikeService likeService;
 
     @Autowired TokenService tokenService;
-    public SignUpOutput signUp(User signUpDto) {
+    public SignUpOutput signUp(Users signUpDto) {
 
 
         //check if user exists or not based on email
-        User user = userRepo.findFirstByEmail(signUpDto.getEmail());
+        //User user = userRepo.findFirstByEmail(signUpDto.getEmail());
+        Users users = userRepo.findFirstByEmail(signUpDto.getEmail());
 
-        if(user != null)
+        if(users != null)
         {
-            throw new IllegalStateException("Instagram user already exists!!!!...sign in instead");
+            throw new IllegalStateException("Blog user already exists!!!!...sign in instead");
         }
 
-//      encryption
+
         String encryptedPassword = null;
 
         try {
@@ -59,10 +60,17 @@ public class UserService {
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-        signUpDto.setPassword(encryptedPassword);
-        userRepo.save(signUpDto);
+        //signUpDto.setPassword(encryptedPassword);
+        //userRepo.save(signUpDto);
 
-        return new SignUpOutput("Instagram user registered","Instagram account created successfully");
+       // return new SignUpOutput("Blog user registered","Blog account created successfully");
+
+        users = new Users(signUpDto.getFirstName(), signUpDto.getLastName(), signUpDto.getBlogName(),signUpDto.getBlogBio(), encryptedPassword, signUpDto.getDob(),signUpDto.getEmail(), signUpDto.getPhoneNumber(), signUpDto.isBlueTicked());
+
+
+        userRepo.save(users);
+
+        return new SignUpOutput("App User registered","App user account created successfully");
 
     }
 
@@ -80,9 +88,9 @@ public class UserService {
 
     public SignInOutput signIn(SignInInput signInDto) {
         //check if user exists or not based on email
-        User user = userRepo.findFirstByEmail(signInDto.getEmail());
+        Users users = userRepo.findFirstByEmail(signInDto.getEmail());
 
-        if(user == null)
+        if(users == null)
         {
             throw new IllegalStateException("User invalid!!!!...sign up instead");
         }
@@ -99,14 +107,14 @@ public class UserService {
 
         //match it with database encrypted password
 
-        boolean isPasswordValid = encryptedPassword.equals(user.getPassword());
+        boolean isPasswordValid = encryptedPassword.equals(users.getPassword());
 
         if(!isPasswordValid)
         {
             throw new IllegalStateException("User invalid!!!!...sign up instead");
         }
 
-        AuthenticationToken token = new AuthenticationToken(user);
+        AuthenticationToken token = new AuthenticationToken(users);
 
         tokenService.saveToken(token);
 
@@ -118,34 +126,34 @@ public class UserService {
     }
 
 
-    public void updateUser(User user , String token) {
-        User originalUser = tokenRepo.findFirstByToken(token).getUser();
+    public void updateUser(Users users, String token) {
+        Users originalUsers = tokenRepo.findFirstByToken(token).getUsers();
 
 
-        if(!(user.getFirstName().isEmpty())){
-            originalUser.setFirstName(user.getFirstName());
+        if(!(users.getFirstName().isEmpty())){
+            originalUsers.setFirstName(users.getFirstName());
         }
-        if((user.getLastName()!=null)){
-            originalUser.setLastName(user.getLastName());
+        if((users.getLastName()!=null)){
+            originalUsers.setLastName(users.getLastName());
         }
-        if((user.getPassword()!=null)){
+        if((users.getPassword()!=null)){
             String encryptedPassword = null;
 
             try {
-                encryptedPassword = encryptPassword(user.getPassword());
+                encryptedPassword = encryptPassword(users.getPassword());
             } catch (NoSuchAlgorithmException e) {
                 e.printStackTrace();
             }
 
-            originalUser.setPassword(encryptedPassword);
+            originalUsers.setPassword(encryptedPassword);
         }
 
-        if((user.getPhoneNumber()!=null)){
+        if((users.getPhoneNumber()!=null)){
             Pattern p = Pattern.compile("\\d{2}-\\d{10}");
 
-            Matcher m = p.matcher(user.getPhoneNumber());
-            if( (m.find() && m.group().equals(user.getPhoneNumber()))){
-                originalUser.setPhoneNumber(user.getPhoneNumber());
+            Matcher m = p.matcher(users.getPhoneNumber());
+            if( (m.find() && m.group().equals(users.getPhoneNumber()))){
+                originalUsers.setPhoneNumber(users.getPhoneNumber());
 
             }else{
                 throw new IllegalStateException("Enter correct details");
@@ -153,19 +161,19 @@ public class UserService {
 
         }
 
-        if((user.getEmail()!=null)){
+        if((users.getEmail()!=null)){
             Pattern p = Pattern.compile("[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}");
 
-            Matcher m = p.matcher(user.getEmail());
-            if( (m.find() && m.group().equals(user.getEmail()))){
-                originalUser.setEmail(user.getEmail());
+            Matcher m = p.matcher(users.getEmail());
+            if( (m.find() && m.group().equals(users.getEmail()))){
+                originalUsers.setEmail(users.getEmail());
 
             }else{
                 throw new IllegalStateException("Enter correct details");
             }
         }
 
-        userRepo.save(originalUser);
+        userRepo.save(originalUsers);
 
 
 
@@ -179,15 +187,15 @@ public class UserService {
         {
             return "Cant follow yourself!!!!";
         }
-        User myUser = userRepo.findByUserId(myId);
-        User otherUser = userRepo.findByUserId(otherId);
+        Users myUsers = userRepo.findByUserId(myId);
+        Users otherUsers = userRepo.findByUserId(otherId);
 
-        if(myUser!=null && otherUser!=null) {
+        if(myUsers !=null && otherUsers !=null) {
 
 
-            followingService.saveFollowing(myUser,otherUser);
+            followingService.saveFollowing(myUsers, otherUsers);
 
-            followerService.saveFollower(otherUser, myUser);
+            followerService.saveFollower(otherUsers, myUsers);
 
             return "Followed Successfully!!!!!";
         }
@@ -198,11 +206,11 @@ public class UserService {
     }
 
     public String toggleBlueTick(Long id, boolean blueTick) {
-        User user = userRepo.findByUserId(id);
+        Users users = userRepo.findByUserId(id);
 
-        if(user!=null) {
-            user.setBlueTicked(blueTick);
-            userRepo.save(user);
+        if(users !=null) {
+            users.setBlueTicked(blueTick);
+            userRepo.save(users);
             return "Blue tick was set to.." + blueTick;
         }
         else

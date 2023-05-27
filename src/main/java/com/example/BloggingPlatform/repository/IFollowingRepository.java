@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IFollowingRepository extends JpaRepository<Following, Long> {
 
-    Long countByUser_userId(long userId);
+    Long countByUsers_userId(long userId);
 }

@@ -11,7 +11,7 @@ public class AdminService {
     UserService userService;
 
     @Autowired
-    private IAdminRepository adminRepo;
+    IAdminRepository adminRepo;
 
     public String toggleBlueTick(Long id, boolean blueTick) {
         return userService.toggleBlueTick(id,blueTick);

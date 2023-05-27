@@ -4,7 +4,7 @@ import com.example.BloggingPlatform.dto.SignInInput;
 import com.example.BloggingPlatform.dto.SignInOutput;
 import com.example.BloggingPlatform.dto.SignUpOutput;
 import com.example.BloggingPlatform.model.PostLike;
-import com.example.BloggingPlatform.model.User;
+import com.example.BloggingPlatform.model.Users;
 import com.example.BloggingPlatform.repository.IFollowingRepository;
 import com.example.BloggingPlatform.service.TokenService;
 import com.example.BloggingPlatform.service.UserService;
@@ -13,8 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -30,7 +28,7 @@ public class UserController {
     IFollowingRepository followRepo;
 
     @PostMapping("/signup")
-    public SignUpOutput signUp(@Valid @RequestBody User signUpDto){
+    public SignUpOutput signUp(@Valid @RequestBody Users signUpDto){
         return userService.signUp(signUpDto);
     }
 
@@ -61,14 +59,14 @@ public class UserController {
     }
 
     @PutMapping()
-    public ResponseEntity<String> updateUser(@RequestParam String email , @RequestParam String token , @RequestBody User user){
+    public ResponseEntity<String> updateUser(@RequestParam String email , @RequestParam String token , @RequestBody Users users){
         HttpStatus status;
         String msg=null;
 
         if(authService.authenticate(email,token))
         {
             try{
-                userService.updateUser(user , token);
+                userService.updateUser(users, token);
                 status = HttpStatus.OK;
                 msg = "User updated sucessfully";
             }catch (Exception e){

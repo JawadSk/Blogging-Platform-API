@@ -35,5 +35,5 @@ public class Post {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false , name = "fk_user_ID")
-    private User user;
+    private Users users;
 }

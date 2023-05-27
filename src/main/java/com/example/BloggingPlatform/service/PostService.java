@@ -1,11 +1,10 @@
 package com.example.BloggingPlatform.service;
 
 import com.example.BloggingPlatform.model.Post;
-import com.example.BloggingPlatform.model.User;
+import com.example.BloggingPlatform.model.Users;
 import com.example.BloggingPlatform.repository.IPostRepository;
 import com.example.BloggingPlatform.repository.ITokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.example.BloggingPlatform.service.PostService;
 import org.springframework.stereotype.Service;
 
 
@@ -26,10 +25,10 @@ public class PostService {
     }
 
     public List<Post> getAllPosts(String token) {
-        User user = tokenRepo.findFirstByToken(token).getUser();
+        Users users = tokenRepo.findFirstByToken(token).getUsers();
 
 
-        List<Post> postList = postRepo.findByUser(user);
+        List<Post> postList = postRepo.findByUsers(users);
 
         return postList;
 

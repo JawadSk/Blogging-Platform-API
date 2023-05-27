@@ -20,10 +20,10 @@ public class AuthenticationToken {
 
     @OneToOne
     @JoinColumn(nullable = false , name = "fk_user_ID")
-    private User user;
+    private Users users;
 
-    public AuthenticationToken(User user) {
-        this.user = user;
+    public AuthenticationToken(Users users) {
+        this.users = users;
         this.tokenCreationDate = LocalDate.now();
         this.token = UUID.randomUUID().toString();
     }

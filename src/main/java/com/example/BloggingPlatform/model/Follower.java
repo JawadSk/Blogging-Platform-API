@@ -14,11 +14,11 @@ public class Follower {
     private Long followerTableId;
 
     @OneToOne
-    private User user;
+    private Users users;
 
     @OneToOne
-    private User follower;
+    private Users follower;
 
-    public Follower(Object o, User myUser, User otherUser) {
+    public Follower(Object o, Users myUsers, Users otherUsers) {
     }
 }

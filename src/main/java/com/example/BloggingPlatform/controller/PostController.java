@@ -1,7 +1,7 @@
 package com.example.BloggingPlatform.controller;
 
 import com.example.BloggingPlatform.model.Post;
-import com.example.BloggingPlatform.model.User;
+import com.example.BloggingPlatform.model.Users;
 import com.example.BloggingPlatform.service.PostService;
 import com.example.BloggingPlatform.service.TokenService;
 import jakarta.validation.Valid;
@@ -28,8 +28,8 @@ public class PostController {
         String msg = "";
         if(authService.authenticate(email,token))
         {
-            User user =  authService.findUserByToken(token);
-            post.setUser(user);
+            Users users =  authService.findUserByToken(token);
+            post.setUsers(users);
             postService.addPost(post);
             msg = " Post posted successfully";
             status = HttpStatus.OK;
